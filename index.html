@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Stock Record</title>
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ HEADER ============ -->
+  <header class="topbar">
+    <div class="brand">📦 <b data-i18n="appName">Stock Record</b></div>
+    <button id="btn-lang" class="lang-btn">🌐 اردو</button>
+  </header>
+
+  <!-- ============ DASHBOARD ============ -->
+  <section id="view-home" class="view active">
+    <div class="pad">
+      <h2 data-i18n="dashboard">Dashboard</h2>
+      <div class="cards2">
+        <div class="card cash"><div class="c-label" data-i18n="cashBalance">Cash Balance</div><div class="c-val" id="d-cash">₨ 0</div></div>
+        <div class="card sale"><div class="c-label" data-i18n="todaySale">Today's Sale</div><div class="c-val" id="d-today">₨ 0</div></div>
+        <div class="card stock"><div class="c-label" data-i18n="stockValue">Stock Value</div><div class="c-val" id="d-stockval">₨ 0</div></div>
+        <div class="card credit"><div class="c-label" data-i18n="totalCredit">Total Credit (Udhaar)</div><div class="c-val" id="d-credit">₨ 0</div></div>
+      </div>
+      <div class="card warn hidden" id="d-lowstock-card">
+        <div class="c-label">⚠️ <span data-i18n="lowStock">Low Stock</span></div>
+        <div id="d-lowstock" class="low-list"></div>
+      </div>
+      <h3 data-i18n="quickActions">Quick Actions</h3>
+      <div class="qa-grid">
+        <button class="qa" data-go="sale">🧾<span data-i18n="newSale">New Sale</span></button>
+        <button class="qa" data-go="purchase">🛒<span data-i18n="newPurchase">New Purchase</span></button>
+        <button class="qa" data-go="stock">📦<span data-i18n="addStock">Add Stock</span></button>
+        <button class="qa" data-go="khata">📒<span data-i18n="khata">Khata</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STOCK ============ -->
+  <section id="view-stock" class="view">
+    <div class="pad">
+      <div class="row-between">
+        <h2 data-i18n="stock">Stock</h2>
+        <button id="btn-add-product" class="btn primary small">＋ <span data-i18n="addProduct">Add Product</span></button>
+      </div>
+      <input id="stock-search" class="search" data-i18n-ph="searchPh" placeholder="🔍 Search product...">
+      <div id="product-list" class="plist"></div>
+    </div>
+  </section>
+
+  <!-- ============ SALE ============ -->
+  <section id="view-sale" class="view">
+    <div class="pad">
+      <h2 data-i18n="newSale">New Sale</h2>
+      <input id="sale-search" class="search" data-i18n-ph="searchPh" placeholder="🔍 Search product...">
+      <div id="sale-cart" class="cart"></div>
+      <div class="bill-box">
+        <div class="row-between"><b data-i18n="total">Total</b><b id="sale-total">₨ 0</b></div>
+        <label class="fld"><span data-i18n="payment">Payment</span>
+          <select id="sale-payment"><option value="cash" data-i18n="cash">Cash</option><option value="credit" data-i18n="credit">Credit (Udhaar)</option></select>
+        </label>
+        <label class="fld hidden" id="sale-cust-wrap"><span data-i18n="customer">Customer</span>
+          <select id="sale-customer"></select>
+        </label>
+        <button id="btn-sale-add-cust" class="btn small hidden">＋ <span data-i18n="newCustomer">New Customer</span></button>
+        <button id="btn-complete-sale" class="btn primary big" data-i18n="completeSale">✅ Complete Sale</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PURCHASE ============ -->
+  <section id="view-purchase" class="view">
+    <div class="pad">
+      <h2 data-i18n="newPurchase">New Purchase</h2>
+      <input id="pur-search" class="search" data-i18n-ph="searchPh" placeholder="🔍 Search product...">
+      <div id="pur-list" class="plist"></div>
+    </div>
+  </section>
+
+  <!-- ============ KHATA ============ -->
+  <section id="view-khata" class="view">
+    <div class="pad">
+      <div class="row-between">
+        <h2 data-i18n="khata">Khata (Credit)</h2>
+        <button id="btn-add-cust" class="btn primary small">＋ <span data-i18n="newCustomer">New Customer</span></button>
+      </div>
+      <div class="card credit"><div class="c-label" data-i18n="totalCredit">Total Credit (Udhaar)</div><div class="c-val" id="k-total">₨ 0</div></div>
+      <div id="cust-list" class="plist"></div>
+    </div>
+  </section>
+
+  <!-- ============ REPORTS ============ -->
+  <section id="view-reports" class="view">
+    <div class="pad">
+      <h2 data-i18n="reports">Reports</h2>
+      <div class="rep-filters">
+        <button class="chip active" data-range="today" data-i18n="today">Today</button>
+        <button class="chip" data-range="week" data-i18n="week">Week</button>
+        <button class="chip" data-range="month" data-i18n="month">Month</button>
+        <button class="chip" data-range="all" data-i18n="all">All</button>
+      </div>
+      <div class="cards2">
+        <div class="card sale"><div class="c-label" data-i18n="sales">Sales</div><div class="c-val" id="r-sales">₨ 0</div></div>
+        <div class="card"><div class="c-label" data-i18n="profit">Profit</div><div class="c-val" id="r-profit">₨ 0</div></div>
+        <div class="card"><div class="c-label" data-i18n="purchases">Purchases</div><div class="c-val" id="r-pur">₨ 0</div></div>
+        <div class="card"><div class="c-label" data-i18n="bills">Bills</div><div class="c-val" id="r-count">0</div></div>
+      </div>
+      <div id="rep-list" class="plist"></div>
+    </div>
+  </section>
+
+  <!-- ============ BACKUP ============ -->
+  <section id="view-backup" class="view">
+    <div class="pad">
+      <h2 data-i18n="backup">Backup</h2>
+      <div class="card">
+        <p data-i18n="backupDesc">Save all your data to a file. Keep it safe — you can restore it anytime.</p>
+        <button id="btn-export" class="btn primary">💾 <span data-i18n="exportBackup">Download Backup</span></button>
+        <button id="btn-import" class="btn">📂 <span data-i18n="importBackup">Restore Backup</span></button>
+        <input type="file" id="import-file" accept=".json,application/json" class="hidden">
+      </div>
+      <div class="card danger">
+        <p data-i18n="resetDesc">Delete ALL data and start fresh. This cannot be undone!</p>
+        <button id="btn-reset" class="btn danger">🗑️ <span data-i18n="resetAll">Delete All Data</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOTTOM NAV ============ -->
+  <nav class="bottomnav">
+    <button class="bn active" data-view="view-home">🏠<span data-i18n="home">Home</span></button>
+    <button class="bn" data-view="view-stock">📦<span data-i18n="stock">Stock</span></button>
+    <button class="bn" data-view="view-sale">🧾<span data-i18n="sale">Sale</span></button>
+    <button class="bn" data-view="view-khata">📒<span data-i18n="khata">Khata</span></button>
+    <button class="bn" data-view="view-reports">📊<span data-i18n="reports">Reports</span></button>
+  </nav>
+
+  <!-- ============ MODALS ============ -->
+  <div id="modal" class="modal hidden"><div class="modal-box" id="modal-box"></div></div>
+  <div id="toast" class="toast hidden"></div>
+</div>
+<script src="app.js?v=1"></script>
+</body>
+</html>
